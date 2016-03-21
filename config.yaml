@@ -60,6 +60,13 @@ variables:
         overrides: null
         required: true
         type: array
+    TIMEZONE:
+        default: America/Chicago
+        value: America/Chicago
+        description: the timezone the servers should come up in
+        overrides: null
+        required: true
+        type: null
     VPN_INSTANCE_TYPE:
         default: t2.micro
         description: null
@@ -72,19 +79,18 @@ variables:
         overrides: null
         required: true
         type: null
-    TIMEZONE:
-        default: America/Chicago
-        value: America/Chicago
-        description: the timezone the servers should come up in
-        overrides: null
-        required: true
-        type: null
     REGION:
         default: "INSTANCE::region"
         description: the region we are launching in
         overrides: null
         required: true
         type: string
+    DATADOG_KEY:
+        default: null
+        value: null
+        description: "If you have a datadog key, enter it here and we will install the agent"
+        overrides: null
+        required: false
     VPN_AMI_ID:
         description: the ami id of the vpn
         switch: "INSTANCE::region"
@@ -99,12 +105,6 @@ variables:
             ap-southeast-2: ami-fd9cecc7
             sa-east-1: ami-b52890a8
         type: case
-    DATADOG_KEY:
-        default: null
-        value: null
-        description: "If you have a datadog key, enter it here and we will install the agent"
-        overrides: null
-        required: false
     VPN_ROUTING_CIDR:
         default: 10.0.0.0
         description: This is the cidr of the network cidr the VPN should on your network. i.e. all traffic to this cidr will be routed through the VPN. set to 0.0.0.0 for all traffic. This works in conjunction with the VPN_ROUTING_MASK variable.
