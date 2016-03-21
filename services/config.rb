@@ -137,11 +137,3 @@ coreo_aws_ec2_instance "${VPN_NAME}" do
   role "${VPN_NAME}"
 end
 
-coreo_aws_ec2_autoscaling "${VPN_NAME}" do
-  action :sustain 
-  minimum 1
-  maximum 1
-  server_definition "${VPN_NAME}"
-  subnet "${PRIVATE_SUBNET_NAME}"
-  elbs ["${VPN_NAME}-elb"]
-end
