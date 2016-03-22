@@ -25,8 +25,9 @@ end
 coreo_aws_vpc_routetable "${PRIVATE_ROUTE_NAME}" do
   action :find
   vpc "${VPC_NAME}"
+  number_of_tables 3
   tags [
-    "Name=us-east-1-private-route"
+    "Name=${PRIVATE_ROUTE_NAME}"
   ]
 end
 
