@@ -20,10 +20,6 @@ end
 coreo_aws_vpc_routetable "${PUBLIC_ROUTE_NAME}" do
   action :find
   vpc "${VPC_NAME}"
-  number_of_tables 1
-  tags [
-        "Name=${PUBLIC_ROUTE_NAME}"
-       ]
 end
 
 coreo_aws_vpc_routetable "${PRIVATE_ROUTE_NAME}" do
