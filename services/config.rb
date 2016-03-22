@@ -141,7 +141,6 @@ coreo_aws_ec2_instance "${VPN_NAME}" do
   size "${VPN_INSTANCE_TYPE}"
   security_groups ["${VPN_NAME}-sg"]
   ssh_key "${VPN_SSH_KEY_NAME}"
-  role "${VPN_NAME}"
 end
 
 coreo_aws_ec2_autoscaling "${VPN_NAME}" do
