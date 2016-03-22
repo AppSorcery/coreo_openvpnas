@@ -10,16 +10,9 @@
 ##   internet_gateway true
 ## end
 ##
-
-
 coreo_aws_vpc_vpc "${VPC_NAME}" do
   action :find
   cidr "${VPC_OCTETS}/16"
-end
-
-coreo_aws_vpc_routetable "${PUBLIC_ROUTE_NAME}" do
-  action :find
-  vpc "${VPC_NAME}"
 end
 
 coreo_aws_vpc_routetable "${PRIVATE_ROUTE_NAME}" do
@@ -31,6 +24,16 @@ coreo_aws_vpc_routetable "${PRIVATE_ROUTE_NAME}" do
   ]
 end
 
+coreo_aws_vpc_subnet "${PRIVATE_SUBNET_NAME}" do
+  action :find
+  route_table "${PRIVATE_ROUTE_NAME}"
+  vpc "${VPC_NAME}"
+end
+
+coreo_aws_vpc_routetable "${PUBLIC_ROUTE_NAME}" do
+  action :find
+  vpc "${VPC_NAME}"
+end
 
 coreo_aws_vpc_subnet "${PUBLIC_SUBNET_NAME}" do
   action :find
