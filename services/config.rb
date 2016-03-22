@@ -20,6 +20,10 @@ end
 coreo_aws_vpc_routetable "${PRIVATE_ROUTE_NAME}" do
   action :find
   vpc "${VPC_NAME}"
+  number_of_tables 3
+  tags [
+        "Name=${PRIVATE_ROUTE_NAME}"
+       ]
 end
 
 coreo_aws_vpc_subnet "${PRIVATE_SUBNET_NAME}" do
@@ -129,6 +133,7 @@ end
 
 coreo_aws_ec2_instance "${VPN_NAME}" do
   action :define
+  upgrade_trigger "1"
   image_id "${VPN_AMI_ID}"
   size "${VPN_INSTANCE_TYPE}"
   security_groups ["${VPN_NAME}-sg"]
@@ -136,3 +141,11 @@ coreo_aws_ec2_instance "${VPN_NAME}" do
   role "${VPN_NAME}"
 end
 
+coreo_aws_ec2_autoscaling "${VPN_NAME}" do
+  action :sustain 
+  minimum 1
+  maximum 1
+  server_definition "${VPN_NAME}"
+  subnet "${PRIVATE_SUBNET_NAME}"
+  elbs ["${VPN_NAME}-elb"]
+end
