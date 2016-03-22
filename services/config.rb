@@ -129,11 +129,6 @@ coreo_aws_ec2_securityGroups "${VPN_NAME}-sg" do
     ]
 end
 
-coreo_aws_iam_instance_profile "${VPN_NAME}" do
-  action :sustain
-  policies ["${VPN_NAME}-route53"]
-end
-
 coreo_aws_ec2_instance "${VPN_NAME}" do
   action :define
   upgrade_trigger "1"
