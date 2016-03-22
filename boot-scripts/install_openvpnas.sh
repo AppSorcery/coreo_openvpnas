@@ -8,6 +8,7 @@
 ##   - VPN_PROTO
 ##   - VPN_PORT
 ##   - HTTPS_PORT
+##   - ALLOW_UDP
 ##
 ######################################################################
 
@@ -28,6 +29,10 @@ if [ -z "${HTTPS_PORT:-}" ]; then
     HTTPS_PORT=443
 fi
 
+if [ -z "${ALLOW_UDP:-}" ]; then
+    ALLOW_UDP=false
+fi
+
 service openvpnas stop
 
 sqlite3 config.db "UPDATE config SET value='$VPN_DNS_PREFIX.$DNS_ZONE' WHERE name='host.name'";
@@ -35,11 +40,9 @@ sqlite3 config.db "UPDATE config SET value='$VPN_DNS_PREFIX.$DNS_ZONE' WHERE nam
 sqlite3 config.db "UPDATE config SET value='$VPN_PROTO' WHERE name='vpn.daemon.0.listen.protocol'";
 sqlite3 config.db "UPDATE config SET value='$VPN_PORT' WHERE name='vpn.daemon.0.listen.port'";
 sqlite3 config.db "UPDATE config SET value='$VPN_PORT' WHERE name='vpn.server.daemon.tcp.port'";
-sqlite3 config.db "UPDATE config SET value='false' WHERE name='vpn.server.daemon.enable'";
+sqlite3 config.db "UPDATE config SET value='$ALLOW_UDP' WHERE name='vpn.server.daemon.enable'";
 
 sqlite3 config.db "UPDATE config SET value='$HTTPS_PORT' WHERE name='admin_ui.https.port'";
 sqlite3 config.db "UPDATE config SET value='$HTTPS_PORT' WHERE name='cs.https.port'";
 
 service openvpnas start
-
-echo "openvpn:^testing" | chpasswd
