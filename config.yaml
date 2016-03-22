@@ -13,16 +13,16 @@ variables:
         required: true
         description: the name to give to the private route
         default: us-east-1-private-route
-    PUBLIC_ROUTE_NAME:
-        required: true
-        description: the name to give to the public route
-        default: us-east-1-public-route
     PUBLIC_SUBNET_NAME:
         default: us-east-1-public-subnet
         description: null
         overrides: null
         required: true
         type: null
+    PUBLIC_ROUTE_NAME:
+        required: true
+        description: the name to give to the public route
+        default: us-east-1-public-route
     VPN_NAME:
         default: vpn-us-east-1
         description: the name of the vpn server to launch
