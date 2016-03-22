@@ -19,6 +19,16 @@ variables:
         overrides: null
         required: true
         type: null
+    BACKUP_BUCKET:
+        default: backup.amenity.io
+        description: the name of the bucket in which we should back things up
+        overrides: null
+        required: true
+    BACKUP_BUCKET_REGION:
+        default: us-east-1
+        description: the region where there vpn backups bucket was created
+        overrides: null
+        required: true
     PUBLIC_ROUTE_NAME:
         required: true
         description: the name to give to the public route
@@ -76,6 +86,18 @@ variables:
         default: America/Chicago
         value: America/Chicago
         description: the timezone the servers should come up in
+        overrides: null
+        required: true
+        type: null
+    VPN_BACKUP_CRON:
+        default: "0 * * * *"
+        description: the cron schedule for backups
+        overrides: null
+        required: true
+        type: string
+    ENV:
+        default: dev
+        description: null
         overrides: null
         required: true
         type: null

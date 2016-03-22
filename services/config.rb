@@ -30,6 +30,35 @@ coreo_aws_vpc_subnet "${PRIVATE_SUBNET_NAME}" do
   vpc "${VPC_NAME}"
 end
 
+coreo_aws_s3_policy "${BACKUP_BUCKET}-policy" do
+  action :sustain
+  policy_document <<-EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::${BACKUP_BUCKET}/*",
+        "arn:aws:s3:::${BACKUP_BUCKET}"
+      ]
+    }
+  ]
+}
+EOF
+end
+
+coreo_aws_s3_bucket "${BACKUP_BUCKET}" do
+   action :sustain
+   bucket_policies ["${BACKUP_BUCKET}-policy"]
+   region "${BACKUP_BUCKET_REGION}"
+end
+
 coreo_aws_vpc_routetable "${PUBLIC_ROUTE_NAME}" do
   action :find
   vpc "${VPC_NAME}"
@@ -129,6 +158,70 @@ coreo_aws_ec2_securityGroups "${VPN_NAME}-sg" do
     ]
 end
 
+coreo_aws_iam_policy "${VPN_NAME}-route53" do
+  action :sustain
+  policy_name "${VPN_NAME}Route53Management"
+  policy_document <<-EOH
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Resource": [
+          "*"
+      ],
+      "Action": [ 
+          "route53:*"
+      ]
+    }
+  ]
+}
+EOH
+end
+
+coreo_aws_iam_policy "${VPN_NAME}-backup" do
+  action :sustain
+  policy_name "Allow${VPN_NAME}S3Backup"
+  policy_document <<-EOH
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Resource": [
+          "arn:aws:s3:::${BACKUP_BUCKET}/${REGION}/vpn/${ENV}/${VPN_NAME}",
+          "arn:aws:s3:::${BACKUP_BUCKET}/${REGION}/vpn/${ENV}/${VPN_NAME}/*"
+      ],
+      "Action": [ 
+          "s3:*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::*",
+      "Action": [
+          "s3:ListAllMyBuckets"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Resource": [
+          "arn:aws:s3:::${BACKUP_BUCKET}",
+          "arn:aws:s3:::${BACKUP_BUCKET}/*"
+      ],
+      "Action": [
+          "s3:GetBucket*", 
+          "s3:List*" 
+      ]
+    }
+  ]
+}
+EOH
+end
+
+coreo_aws_iam_instance_profile "${VPN_NAME}" do
+  action :sustain
+  policies ["${VPN_NAME}-route53", "${VPN_NAME}-backup"]
+end
+
 coreo_aws_ec2_instance "${VPN_NAME}" do
   action :define
   upgrade_trigger "1"
@@ -136,6 +229,7 @@ coreo_aws_ec2_instance "${VPN_NAME}" do
   size "${VPN_INSTANCE_TYPE}"
   security_groups ["${VPN_NAME}-sg"]
   ssh_key "${VPN_SSH_KEY_NAME}"
+  role "${VPN_NAME}"
 end
 
 coreo_aws_ec2_autoscaling "${VPN_NAME}" do
