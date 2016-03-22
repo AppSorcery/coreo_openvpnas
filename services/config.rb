@@ -20,8 +20,8 @@ coreo_aws_vpc_routetable "${PRIVATE_ROUTE_NAME}" do
   vpc "${VPC_NAME}"
   number_of_tables 3
   tags [
-    "Name=${PRIVATE_ROUTE_NAME}"
-  ]
+        "Name=${PRIVATE_ROUTE_NAME}"
+       ]
 end
 
 coreo_aws_vpc_subnet "${PRIVATE_SUBNET_NAME}" do
