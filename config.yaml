@@ -13,12 +13,6 @@ variables:
         required: true
         description: the name to give to the private route
         default: us-east-1-private-route
-    PRIVATE_SUBNET_NAME:
-        default: us-east-1-private-subnet
-        description: null
-        overrides: null
-        required: true
-        type: null
     PUBLIC_ROUTE_NAME:
         required: true
         description: the name to give to the public route
@@ -69,6 +63,12 @@ variables:
     VPN_SSH_KEY_NAME:
         default: vpn.us-east-1.amenity.io
         description: What key should the vpn instance be launched with?
+        overrides: null
+        required: true
+        type: null
+    PRIVATE_SUBNET_NAME:
+        default: us-east-1-private-subnet
+        description: null
         overrides: null
         required: true
         type: null
