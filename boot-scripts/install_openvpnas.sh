@@ -30,12 +30,12 @@ fi
 
 service openvpnas stop
 
-sqlite3 config.db "UPDATE config SET value='vpn.us-east-1.amenity.io' WHERE name='host.name'";
+sqlite3 config.db "UPDATE config SET value='$VPN_NAME.$DNS_ZONE' WHERE name='host.name'";
 
 sqlite3 config.db "UPDATE config SET value='$VPN_PROTO' WHERE name='vpn.daemon.0.listen.protocol'";
 sqlite3 config.db "UPDATE config SET value='$VPN_PORT' WHERE name='vpn.daemon.0.listen.port'";
 sqlite3 config.db "UPDATE config SET value='$VPN_PORT' WHERE name='vpn.server.daemon.tcp.port'";
-sqlite3 config.db "UPDATE config SET value='false' WHERE name='$VPN_NAME.$DNS_ZONE'";
+sqlite3 config.db "UPDATE config SET value='false' WHERE name='vpn.server.daemon.enable'";
 
 sqlite3 config.db "UPDATE config SET value='$HTTPS_PORT' WHERE name='admin_ui.https.port'";
 sqlite3 config.db "UPDATE config SET value='$HTTPS_PORT' WHERE name='cs.https.port'";
