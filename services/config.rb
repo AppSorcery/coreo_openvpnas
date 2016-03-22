@@ -20,14 +20,15 @@ end
 coreo_aws_vpc_routetable "${PUBLIC_ROUTE_NAME}" do
   action :find
   vpc "${VPC_NAME}"
-  number_of_tables 99
 end
 
 coreo_aws_vpc_routetable "${PRIVATE_ROUTE_NAME}" do
   action :find
   vpc "${VPC_NAME}"
   number_of_tables 3
-  tags ["Name=us-east-1-private-route"]
+  tags [
+    "Name=us-east-1-private-route"
+  ]
 end
 
 
