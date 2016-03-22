@@ -3,7 +3,7 @@
 ##
 ## Variables in the script:
 ##   REQUIRED
-##     - VPN_NAME
+##     - VPN_DNS_PREFIX
 ##     - DNS_ZONE
 ##   - VPN_PROTO
 ##   - VPN_PORT
@@ -30,7 +30,7 @@ fi
 
 service openvpnas stop
 
-sqlite3 config.db "UPDATE config SET value='$VPN_NAME.$DNS_ZONE' WHERE name='host.name'";
+sqlite3 config.db "UPDATE config SET value='$VPN_DNS_PREFIX.$DNS_ZONE' WHERE name='host.name'";
 
 sqlite3 config.db "UPDATE config SET value='$VPN_PROTO' WHERE name='vpn.daemon.0.listen.protocol'";
 sqlite3 config.db "UPDATE config SET value='$VPN_PORT' WHERE name='vpn.daemon.0.listen.port'";
