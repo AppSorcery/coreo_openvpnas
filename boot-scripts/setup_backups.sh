@@ -28,15 +28,12 @@ cat <<EOF > "${script_dir}/pre-restore.sh"
 #!/bin/bash
 set -eux
 service openvpnas stop
-mkdir -p /usr/local/openvpn/as/etc/db
 exit 0
 
 EOF
 cat <<EOF > "${script_dir}/post-restore.sh"
 #!/bin/bash
 set -eux
-shopt -s dotglob
-mv /usr/local/openvpn/as/etc/db/* /usr/local/openvpn_as/etc/db
 service openvpnas start
 exit 0
 
