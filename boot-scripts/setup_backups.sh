@@ -26,12 +26,18 @@ script_dir="/var/tmp/cloudcoreo-directory-backup-scripts"
 mkdir -p "$script_dir"
 cat <<EOF > "${script_dir}/pre-restore.sh"
 #!/bin/bash
+set -eux
+service openvpnas stop
+mkdir -p /usr/local/openvpn/as/etc/db
+exit 0
 
 EOF
 cat <<EOF > "${script_dir}/post-restore.sh"
 #!/bin/bash
 set -eux
-service openvpnas restart
+shopt -s dotglob
+mv /usr/local/openvpn/as/etc/db/* /usr/local/openvpn_as/etc/db
+service openvpnas start
 exit 0
 
 EOF
@@ -39,8 +45,8 @@ EOF
 ## now we need to perform the restore
 (
     cd /opt/; 
-    python cloudcoreo-directory-backup.py --s3-backup-region ${backup_bucket_region} --s3-backup-bucket ${BACKUP_BUCKET} --s3-prefix ${MY_REGION}/vpn/${ENV}/${VPN_NAME} --directory /etc/passwd --directory /etc/group --directory /etc/shadow --dump-dir /tmp --restore --post-restore-script "${script_dir}/post-restore.sh" --pre-restore-script "${script_dir}/pre-restore.sh"
+    python cloudcoreo-directory-backup.py --s3-backup-region ${backup_bucket_region} --s3-backup-bucket ${BACKUP_BUCKET} --s3-prefix ${MY_REGION}/vpn/${ENV}/${VPN_NAME} --directory /etc/passwd --directory /etc/group --directory /etc/shadow --directory /usr/local/openvpn_as/etc/db --dump-dir /tmp --restore --post-restore-script "${script_dir}/post-restore.sh" --pre-restore-script "${script_dir}/pre-restore.sh"
 )
 
 ## now that we are restored, lets set up the backups
-echo "${backup_cron} ps -fwwC python | grep -q cloudcoreo-directory-backup || { cd /opt/; nohup python cloudcoreo-directory-backup.py --s3-backup-region ${backup_bucket_region} --s3-backup-bucket ${BACKUP_BUCKET} --s3-prefix ${MY_REGION}/vpn/${ENV}/${VPN_NAME} --directory /etc/passwd --directory /etc/group --directory /etc/shadow --dump-dir /tmp & }" | crontab
+echo "${backup_cron} ps -fwwC python | grep -q cloudcoreo-directory-backup || { cd /opt/; nohup python cloudcoreo-directory-backup.py --s3-backup-region ${backup_bucket_region} --s3-backup-bucket ${BACKUP_BUCKET} --s3-prefix ${MY_REGION}/vpn/${ENV}/${VPN_NAME} --directory /etc/passwd --directory /etc/group --directory /etc/shadow --directory /usr/local/openvpn_as/etc/db --dump-dir /tmp & }" | crontab
