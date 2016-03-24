@@ -96,7 +96,7 @@ variables:
         required: true
         type: string
     ENV:
-        default: test
+        default: dev
         description: null
         overrides: null
         required: true
