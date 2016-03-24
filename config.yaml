@@ -20,7 +20,7 @@ variables:
         required: true
         type: null
     BACKUP_BUCKET:
-        default: 
+        default: backup.amenity.io
         description: the name of the bucket in which we should back things up
         overrides: null
         required: true
@@ -58,7 +58,7 @@ variables:
         required: true
         type: null
     DNS_ZONE:
-        default:
+        default: amenity.io
         description: the dns entry for the zone (i.e. example.com)
         overrides: null
         required: true
@@ -77,7 +77,7 @@ variables:
         required: true
         type: null
     VPN_SSH_KEY_NAME:
-        default:
+        default: vpn.us-east-1.amenity.io
         description: What key should the vpn instance be launched with?
         overrides: null
         required: true
