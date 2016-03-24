@@ -24,6 +24,11 @@ variables:
         description: the name of the bucket in which we should back things up
         overrides: null
         required: true
+    BACKUP_BUCKET_PREFIX:
+        default: vpn
+        description: the name of the folder within the backups bucket in which we should back things up
+        overrides: null
+        required: true
     BACKUP_BUCKET_REGION:
         default: us-east-1
         description: the region where there vpn backups bucket was created
