@@ -77,17 +77,22 @@ coreo_aws_ec2_securityGroups "${VPN_NAME}-elb-sg" do
   allows [ 
           { 
             :direction => :ingress,
-            :protocol => :tcp,
-            :ports => [1199],
+            :protocol => :${VPN_PROTO},
+            :ports => [${VPN_PORT}],
             :cidrs => ${VPN_ACCESS_CIDRS},
           },{ 
             :direction => :ingress,
             :protocol => :tcp,
-            :ports => [443],
+            :ports => [${HTTPS_PORT}],
             :cidrs => ${VPN_ACCESS_CIDRS},
           },{ 
             :direction => :egress,
             :protocol => :tcp,
+            :ports => ["0..65535"],
+            :cidrs => ${VPN_ACCESS_CIDRS},
+          },{ 
+            :direction => :egress,
+            :protocol => :udp,
             :ports => ["0..65535"],
             :cidrs => ${VPN_ACCESS_CIDRS},
           }
@@ -102,20 +107,20 @@ coreo_aws_ec2_elb "${VPN_NAME}-elb" do
   security_groups ["${VPN_NAME}-elb-sg"]
   listeners [
              {
-               :elb_protocol => 'tcp', 
-               :elb_port => 1199, 
-               :to_protocol => 'tcp', 
-               :to_port => 1199
+               :elb_protocol => '${VPN_PROTO}', 
+               :elb_port => ${VPN_PORT}, 
+               :to_protocol => '${VPN_PROTO}', 
+               :to_port => ${VPN_PORT}
              },
              {
                :elb_protocol => 'tcp', 
-               :elb_port => 443, 
+               :elb_port => ${HTTPS_PORT}, 
                :to_protocol => 'tcp', 
-               :to_port => 443
+               :to_port => ${HTTPS_PORT}
              }
             ]
-  health_check_protocol 'tcp'
-  health_check_port "1199"
+  health_check_protocol '${VPN_PROTO}'
+  health_check_port "${VPN_PORT}"
   health_check_timeout 5
   health_check_interval 120
   health_check_unhealthy_threshold 5
@@ -137,12 +142,12 @@ coreo_aws_ec2_securityGroups "${VPN_NAME}-sg" do
           { 
             :direction => :ingress,
             :protocol => :tcp,
-            :ports => [443],
+            :ports => [${HTTPS_PORT}],
             :groups => ["${VPN_NAME}-elb-sg"],
           },{ 
             :direction => :ingress,
-            :protocol => :tcp,
-            :ports => [1199],
+            :protocol => :${VPN_PROTO},
+            :ports => [${VPN_PORT}],
             :groups => ["${VPN_NAME}-elb-sg"],
           },{ 
             :direction => :ingress,
@@ -152,6 +157,11 @@ coreo_aws_ec2_securityGroups "${VPN_NAME}-sg" do
           },{ 
             :direction => :egress,
             :protocol => :tcp,
+            :ports => ["0..65535"],
+            :cidrs => ["0.0.0.0/0"],
+          },{ 
+            :direction => :egress,
+            :protocol => :udp,
             :ports => ["0..65535"],
             :cidrs => ["0.0.0.0/0"],
           }
