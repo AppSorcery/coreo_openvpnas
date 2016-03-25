@@ -49,6 +49,21 @@ variables:
         description: the name of the vpn server to launch
         overrides: null
         required: true
+    VPN_PROTO:
+    	default: udp
+        description: protocol of vpn server
+        overrides: null
+        required: false
+    VPN_PORT:
+    	default: 1199
+        description: port of vpn server
+        overrides: null
+        required: false
+    HTTPS_PORT:
+    	default: 443
+        description: port of vpn server admin page
+        overrides: null
+        required: false
     VPN_ACCESS_CIDRS:
         default:
             - 0.0.0.0/0
