@@ -39,6 +39,7 @@ fi
 service openvpnas stop
 
 sqlite3 config.db "UPDATE config SET value='$VPN_DNS_PREFIX.$DNS_ZONE' WHERE name='host.name'";
+sqlite3 config.db "UPDATE config SET value='$VPN_ROUTING_CIDR/$VPN_ROUTING_MASK' WHERE name='vpn.server.routing.private_network.0'";
 
 sqlite3 config.db "UPDATE config SET value='$VPN_PROTO' WHERE name='vpn.daemon.0.listen.protocol'";
 sqlite3 config.db "UPDATE config SET value='$VPN_PORT' WHERE name='vpn.daemon.0.listen.port'";
@@ -48,6 +49,5 @@ sqlite3 config.db "UPDATE config SET value='false' WHERE name='vpn.server.daemon
 sqlite3 config.db "UPDATE config SET value='$HTTPS_PORT' WHERE name='admin_ui.https.port'";
 sqlite3 config.db "UPDATE config SET value='$HTTPS_PORT' WHERE name='cs.https.port'";
 sqlite3 config.db "UPDATE config SET value='$PORT_SHARE_ENABLE' WHERE name='vpn.server.port_share.enable'";
-
 
 service openvpnas start
