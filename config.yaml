@@ -112,6 +112,21 @@ variables:
         overrides: null
         required: true
         type: string
+    VPN_PROTO:
+        default: tcp
+        description: protocol of vpn server (provided for future use -- ELB currently does NOT support health check on udp)
+        overrides: null
+        required: false
+    VPN_PORT:
+        default: 1199
+        description: port of vpn server
+        overrides: null
+        required: false
+    HTTPS_PORT:
+        default: 443
+        description: port of vpn server admin page
+        overrides: null
+        required: false
     VPN_AMI_ID:
         description: the ami id of the vpn
         switch: "INSTANCE::region"
@@ -130,21 +145,6 @@ variables:
         default: null
         value: null
         description: "If you have a datadog key, enter it here and we will install the agent"
-        overrides: null
-        required: false
-    VPN_PROTO:
-        default: udp
-        description: protocol of vpn server
-        overrides: null
-        required: false
-    VPN_PORT:
-        default: 1199
-        description: port of vpn server
-        overrides: null
-        required: false
-    HTTPS_PORT:
-        default: 443
-        description: port of vpn server admin page
         overrides: null
         required: false
     VPN_ROUTING_CIDR:

@@ -77,7 +77,12 @@ coreo_aws_ec2_securityGroups "${VPN_NAME}-elb-sg" do
   allows [ 
           { 
             :direction => :ingress,
-            :protocol => :${VPN_PROTO},
+            :protocol => :tcp,
+            :ports => [${VPN_PORT}],
+            :cidrs => ${VPN_ACCESS_CIDRS},
+          },{ 
+            :direction => :ingress,
+            :protocol => :udp,
             :ports => [${VPN_PORT}],
             :cidrs => ${VPN_ACCESS_CIDRS},
           },{ 
@@ -146,7 +151,12 @@ coreo_aws_ec2_securityGroups "${VPN_NAME}-sg" do
             :groups => ["${VPN_NAME}-elb-sg"],
           },{ 
             :direction => :ingress,
-            :protocol => :${VPN_PROTO},
+            :protocol => :tcp,
+            :ports => [${VPN_PORT}],
+            :groups => ["${VPN_NAME}-elb-sg"],
+          },{ 
+            :direction => :ingress,
+            :protocol => :udp,
             :ports => [${VPN_PORT}],
             :groups => ["${VPN_NAME}-elb-sg"],
           },{ 
