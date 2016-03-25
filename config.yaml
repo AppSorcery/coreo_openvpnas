@@ -1,4 +1,21 @@
 variables:
+    BACKUP_BUCKET:
+        default: null
+        description: the name of the bucket in which we should back things up
+        overrides: null
+        required: true
+    DNS_ZONE:
+        default: null
+        description: the dns entry for the zone (i.e. example.com)
+        overrides: null
+        required: true
+        type: null
+    VPN_SSH_KEY_NAME:
+        default: null
+        description: What key should the vpn instance be launched with?
+        overrides: null
+        required: true
+        type: null
     VPC_NAME:
         required: true
         description: the name of the VPC
@@ -19,16 +36,6 @@ variables:
         overrides: null
         required: true
         type: null
-    BACKUP_BUCKET:
-        default: 
-        description: the name of the bucket in which we should back things up
-        overrides: null
-        required: true
-    BACKUP_BUCKET_PREFIX:
-        default: vpn
-        description: the name of the folder within the backups bucket in which we should back things up
-        overrides: null
-        required: true
     BACKUP_BUCKET_REGION:
         default: us-east-1
         description: the region where there vpn backups bucket was created
@@ -49,21 +56,6 @@ variables:
         description: the name of the vpn server to launch
         overrides: null
         required: true
-    VPN_PROTO:
-    	default: udp
-        description: protocol of vpn server
-        overrides: null
-        required: false
-    VPN_PORT:
-    	default: 1199
-        description: port of vpn server
-        overrides: null
-        required: false
-    HTTPS_PORT:
-    	default: 443
-        description: port of vpn server admin page
-        overrides: null
-        required: false
     VPN_ACCESS_CIDRS:
         default:
             - 0.0.0.0/0
@@ -74,12 +66,6 @@ variables:
     VPN_DNS_PREFIX:
         default: vpn
         description: "the dns entry to create for the VPN server (<prefix>.<zone>)"
-        overrides: null
-        required: true
-        type: null
-    DNS_ZONE:
-        default:
-        description: the dns entry for the zone (i.e. example.com)
         overrides: null
         required: true
         type: null
@@ -96,12 +82,6 @@ variables:
         overrides: null
         required: true
         type: null
-    VPN_SSH_KEY_NAME:
-        default:
-        description: What key should the vpn instance be launched with?
-        overrides: null
-        required: true
-        type: null
     TIMEZONE:
         default: America/Chicago
         value: America/Chicago
@@ -109,6 +89,11 @@ variables:
         overrides: null
         required: true
         type: null
+    BACKUP_BUCKET_PREFIX:
+        default: vpn
+        description: the name of the folder within the backups bucket in which we should back things up
+        overrides: null
+        required: true
     VPN_BACKUP_CRON:
         default: "0 * * * *"
         description: the cron schedule for backups
@@ -145,6 +130,21 @@ variables:
         default: null
         value: null
         description: "If you have a datadog key, enter it here and we will install the agent"
+        overrides: null
+        required: false
+    VPN_PROTO:
+        default: udp
+        description: protocol of vpn server
+        overrides: null
+        required: false
+    VPN_PORT:
+        default: 1199
+        description: port of vpn server
+        overrides: null
+        required: false
+    HTTPS_PORT:
+        default: 443
+        description: port of vpn server admin page
         overrides: null
         required: false
     VPN_ROUTING_CIDR:
