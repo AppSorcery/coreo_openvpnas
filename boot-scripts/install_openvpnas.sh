@@ -24,7 +24,7 @@ if [ -z "${VPN_PROTO:-}" ]; then
 fi
 
 PORT_SHARE_ENABLE=false
-if [ "$VPN_PROTO" == "tcp" ]
+if [ "$VPN_PROTO" == "tcp" ]; then
     PORT_SHARE_ENABLE=true
 fi
 
