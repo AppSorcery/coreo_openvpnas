@@ -136,7 +136,7 @@ coreo_aws_route53_record "${VPN_DNS_PREFIX}" do
   action :sustain
   type "CNAME"
   zone "${DNS_ZONE}"
-  values ["STACK::coreo_aws_ec2_elb.${VPN_NAME}-elb.dns_name"]
+  values ["COMPOSITE::coreo_aws_ec2_elb.${VPN_NAME}-elb.dns_name"]
 end
 
 coreo_aws_ec2_securityGroups "${VPN_NAME}-sg" do
